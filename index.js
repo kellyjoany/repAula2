@@ -9,7 +9,7 @@ const books = ['harry potter', 'legacy', 'learning javascript', 'docker for you'
 function checkUsersInArray(req, res, next){
   const user = users[req.params.indexUser];
   if(!user){
-    return res.status(400).json({error: `Index doesn't exists`});
+    return res.status(400).json({error: `Index user doesn't exists`});
   }
   req.user = user;
   return next();
@@ -18,7 +18,7 @@ function checkUsersInArray(req, res, next){
 function checkBooksInArray(req, res, next){
   const book = books[req.params.indexBook];
   if(!book){
-    return res.status(400).json({error: `Index doesn't exists`});
+    return res.status(400).json({error: `Index book doesn't exists`});
   }
   req.book = book;
   return next();
@@ -42,12 +42,14 @@ server.get('/books/', (req, res) => {
   return res.json(books);
 });
 
-server.get('/users/:indexBook', checkBooksInArray, (req, res) => {
+server.get('/books/:indexBook', checkBooksInArray, (req, res) => {
   return res.json(req.book);
 });
 
 server.get('/users/:indexUser/books/:indexBook', checkUsersInArray, checkBooksInArray, (req, res) => {
-  return res.json(req.user, req.book);
+ // const user = req.user;
+ // const book = req.book
+  return res.json({ users: req.user, books: req.book });
 });
 
 //access http://localhost:3000/country?country=Brazil
